@@ -1,3 +1,4 @@
+
 # ResearchMind — AI-Powered Research Agent
 
 > **Built for IBM Hackathon** | Powered by **IBM Granite** on **IBM Watsonx.ai**
