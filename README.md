@@ -9,7 +9,7 @@
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple?logo=bootstrap)](https://getbootstrap.com)
 
 ---
-##Live Demo - https://research-agent-v3ro.onrender.com
+## Live Demo - https://research-agent-v3ro.onrender.com
 ## Overview
 
 **ResearchMind** is a production-ready AI research assistant that autonomously supports the full academic research lifecycle — from paper discovery and summarisation to literature review generation and citation management — using **IBM Granite models** on **IBM Watsonx.ai** and **Retrieval-Augmented Generation (RAG)** for factually grounded responses.
