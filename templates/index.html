@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+{% block title %}ResearchMind — AI Research Chat{% endblock %}
+
+{% block content %}
+<div class="research-layout">
+
+  <!-- ========================= LEFT SIDEBAR ========================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h6 class="sidebar-title"><i class="bi bi-clock-history me-2"></i>Research History</h6>
+      <button class="btn btn-sm btn-icon" id="clearHistoryBtn" title="Clear History">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-search">
+      <div class="input-group input-group-sm">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="historySearch" placeholder="Filter history...">
+      </div>
+    </div>
+
+    <div class="sidebar-list" id="historyList">
+      <div class="sidebar-empty text-center py-4">
+        <i class="bi bi-journal-text opacity-25 fs-2"></i>
+        <p class="small text-muted mt-2">No history yet.<br>Start researching!</p>
+      </div>
+    </div>
+
+    <!-- Bookmarks section -->
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-header mt-2">
+      <h6 class="sidebar-title"><i class="bi bi-bookmark-fill me-2"></i>Bookmarks</h6>
+    </div>
+    <div class="sidebar-list" id="bookmarkList" style="max-height: 220px;">
+      <div class="sidebar-empty text-center py-3">
+        <i class="bi bi-bookmark opacity-25 fs-2"></i>
+        <p class="small text-muted mt-2">No bookmarks yet.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================= MAIN PANEL ========================= -->
+  <div class="main-panel">
+
+    <!-- TOOLBAR -->
+    <div class="panel-toolbar">
+      <button class="btn btn-sm btn-icon d-lg-none" id="sidebarToggle">
+        <i class="bi bi-layout-sidebar"></i>
+      </button>
+
+      <div class="toolbar-tabs" id="modeTabs">
+        <button class="tab-btn active" data-mode="chat" title="Chat with AI Agent">
+          <i class="bi bi-chat-dots"></i> <span>Chat</span>
+        </button>
+        <button class="tab-btn" data-mode="search" title="Search Papers">
+          <i class="bi bi-search"></i> <span>Search</span>
+        </button>
+        <button class="tab-btn" data-mode="review" title="Literature Review">
+          <i class="bi bi-journal-richtext"></i> <span>Lit Review</span>
+        </button>
+        <button class="tab-btn" data-mode="report" title="Draft Report Section">
+          <i class="bi bi-file-text"></i> <span>Report</span>
+        </button>
+        <button class="tab-btn" data-mode="citations" title="Citation Manager">
+          <i class="bi bi-quote"></i> <span>Citations</span>
+        </button>
+      </div>
+
+      <div class="toolbar-actions ms-auto">
+        <button class="btn btn-sm btn-outline-primary" id="exportBtn" title="Export Report">
+          <i class="bi bi-download me-1"></i><span class="d-none d-md-inline">Export</span>
+        </button>
+        <a href="/dashboard" class="btn btn-sm btn-outline-secondary" title="Dashboard">
+          <i class="bi bi-grid-3x3-gap me-1"></i><span class="d-none d-md-inline">Dashboard</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===================== CHAT MODE ===================== -->
+    <div class="mode-panel active" id="mode-chat">
+      <div class="chat-container" id="chatContainer">
+        <!-- Welcome message -->
+        <div class="chat-welcome" id="chatWelcome">
+          <div class="welcome-icon">
+            <i class="bi bi-cpu-fill"></i>
+          </div>
+          <h2 class="welcome-title">Hello! I'm ResearchMind</h2>
+          <p class="welcome-subtitle">Your AI research assistant powered by IBM Granite on Watsonx.ai</p>
+
+          {% if not watsonx_ready %}
+          <div class="alert alert-warning mt-3 text-start" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>IBM Watsonx.ai not configured.</strong>
+            Configure your <code>.env</code> file with a valid
+            <code>IBM_CLOUD_API_KEY</code> and <code>WATSONX_PROJECT_ID</code>.
+            Paper search still works without AI features.
+          </div>
+          {% endif %}
+
+          <div class="welcome-chips mt-4">
+            <p class="text-muted small mb-2">Try asking:</p>
+            <div class="chips-grid">
+              <button class="chip" data-prompt="Find recent papers on large language models and retrieval augmented generation">
+                <i class="bi bi-search me-1"></i> Find papers on LLMs & RAG
+              </button>
+              <button class="chip" data-prompt="Summarize the key contributions of transformer-based models in NLP">
+                <i class="bi bi-file-text me-1"></i> Summarize transformer contributions
+              </button>
+              <button class="chip" data-prompt="What are the current research gaps in federated learning?">
+                <i class="bi bi-lightbulb me-1"></i> Research gaps in federated learning
+              </button>
+              <button class="chip" data-prompt="Generate a literature review on deep learning for medical imaging">
+                <i class="bi bi-journal-richtext me-1"></i> Literature review on medical AI
+              </button>
+              <button class="chip" data-prompt="Compare BERT, GPT, and T5 models for text classification">
+                <i class="bi bi-bar-chart me-1"></i> Compare BERT vs GPT vs T5
+              </button>
+              <button class="chip" data-prompt="Draft an introduction section for a paper on explainable AI">
+                <i class="bi bi-pencil me-1"></i> Draft intro: Explainable AI
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages will be appended here -->
+        <div id="chatMessages"></div>
+
+        <!-- Typing indicator -->
+        <div class="chat-typing d-none" id="chatTyping">
+          <div class="typing-bubble">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+          <span class="typing-label">IBM Granite is thinking...</span>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="chat-input-area">
+        <!-- Retrieved papers strip -->
+        <div class="papers-strip d-none" id="papersStrip">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="small fw-semibold text-muted">
+              <i class="bi bi-journals me-1"></i>
+              Retrieved Papers (<span id="papersCount">0</span>)
+            </span>
+            <button class="btn btn-xs btn-link" id="clearPapersBtn">Clear</button>
+          </div>
+          <div class="papers-scroll" id="papersList"></div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-wrapper">
+            <textarea
+              id="chatInput"
+              class="form-control chat-textarea"
+              placeholder="Ask me anything about research... (Shift+Enter for new line, Enter to send)"
+              rows="1"
+            ></textarea>
+          </div>
+          <div class="input-actions">
+            <button class="btn btn-icon" id="clearChatBtn" title="Clear chat">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+            <button class="btn btn-send" id="sendBtn" title="Send (Enter)">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </div>
+        </div>
+        <div class="input-footer">
+          <span class="text-muted small">
+            <i class="bi bi-shield-check me-1"></i>
+            RAG-grounded responses · IBM Granite Model · Hallucination prevention enabled
+          </span>
+          <label class="form-check form-switch d-inline-flex align-items-center ms-3">
+            <input class="form-check-input" type="checkbox" id="autoSearchToggle" checked>
+            <span class="form-check-label small ms-1">Auto-retrieve papers</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SEARCH MODE ===================== -->
+    <div class="mode-panel" id="mode-search">
+      <div class="panel-content">
+        <div class="panel-inner">
+          <div class="section-header">
+            <h4><i class="bi bi-search me-2"></i>Paper Search</h4>
+            <p class="text-muted">Search across arXiv, Semantic Scholar, Crossref, and PubMed</p>
+          </div>
+
+          <div class="search-form card p-3 mb-4">
+            <div class="row g-2">
+              <div class="col-md-8">
+                <input type="text" class="form-control" id="searchQuery"
+                  placeholder="e.g. attention mechanism transformer neural network">
+              </div>
+              <div class="col-md-2">
+                <select class="form-select" id="searchLimit">
+                  <option value="5">5 papers</option>
+                  <option value="10" selected>10 papers</option>
+                  <option value="15">15 papers</option>
+                  <option value="20">20 papers</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-primary w-100" id="searchBtn">
+                  <i class="bi bi-search me-1"></i> Search
+                </button>
+              </div>
+            </div>
+            <div class="mt-2 d-flex flex-wrap gap-2">
+              <label class="small fw-semibold text-muted me-1 my-auto">Sources:</label>
+              <label class="filter-chip"><input type="checkbox" value="arxiv" checked> arXiv</label>
+              <label class="filter-chip"><input type="checkbox" value="semantic_scholar" checked> Semantic Scholar</label>
+              <label class="filter-chip"><input type="checkbox" value="crossref" checked> Crossref</label>
+              <label class="filter-chip"><input type="checkbox" value="pubmed" checked> PubMed</label>
+            </div>
+          </div>
+
+          <div id="searchLoading" class="text-center py-4 d-none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Searching academic databases...</p>
+          </div>
+
+          <div id="searchResults"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== LIT REVIEW MODE ===================== -->
+    <div class="mode-panel" id="mode-review">
+      <div class="panel-content">
+        <div class="panel-inner">
+          <div class="section-header">
+            <h4><i class="bi bi-journal-richtext me-2"></i>Literature Review Generator</h4>
+            <p class="text-muted">Generate a comprehensive academic literature review with research gaps</p>
+          </div>
+
+          <div class="review-form card p-3 mb-4">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Research Topic</label>
+              <input type="text" class="form-control" id="reviewTopic"
+                placeholder="e.g. Federated Learning for Healthcare Data Privacy">
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Number of papers to retrieve</label>
+                <select class="form-select form-select-sm" id="reviewPaperCount">
+                  <option value="5">5 papers</option>
+                  <option value="8">8 papers</option>
+                  <option value="12" selected>12 papers (recommended)</option>
+                  <option value="15">15 papers</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Citation style</label>
+                <select class="form-select form-select-sm" id="reviewCitationStyle">
+                  <option value="APA" selected>APA 7th Edition</option>
+                  <option value="IEEE">IEEE</option>
+                  <option value="MLA">MLA 9th Edition</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="generateReviewBtn">
+              <i class="bi bi-journal-richtext me-2"></i>Generate Literature Review
+            </button>
+          </div>
+
+          <div id="reviewLoading" class="text-center py-4 d-none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Generating literature review with IBM Granite...</p>
+          </div>
+
+          <div id="reviewResult"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== REPORT MODE ===================== -->
+    <div class="mode-panel" id="mode-report">
+      <div class="panel-content">
+        <div class="panel-inner">
+          <div class="section-header">
+            <h4><i class="bi bi-file-text me-2"></i>Research Report Drafter</h4>
+            <p class="text-muted">Draft any section of a research paper using IBM Granite</p>
+          </div>
+
+          <div class="report-form card p-3 mb-4">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Research Topic</label>
+              <input type="text" class="form-control" id="reportTopic"
+                placeholder="e.g. Contrastive Learning for Visual Representations">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Section to Draft</label>
+              <div class="section-grid" id="sectionGrid">
+                <button class="section-btn active" data-section="abstract">Abstract</button>
+                <button class="section-btn" data-section="introduction">Introduction</button>
+                <button class="section-btn" data-section="related_work">Related Work</button>
+                <button class="section-btn" data-section="methodology">Methodology</button>
+                <button class="section-btn" data-section="results">Results</button>
+                <button class="section-btn" data-section="discussion">Discussion</button>
+                <button class="section-btn" data-section="conclusion">Conclusion</button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Additional Notes <span class="text-muted fw-normal">(optional)</span></label>
+              <textarea class="form-control" id="reportNotes" rows="2"
+                placeholder="Specific aspects, methods, or context to include..."></textarea>
+            </div>
+            <button class="btn btn-primary" id="generateSectionBtn">
+              <i class="bi bi-pencil-square me-2"></i>Draft Section
+            </button>
+          </div>
+
+          <div id="reportLoading" class="text-center py-4 d-none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Drafting section with IBM Granite...</p>
+          </div>
+
+          <div id="reportResult"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== CITATIONS MODE ===================== -->
+    <div class="mode-panel" id="mode-citations">
+      <div class="panel-content">
+        <div class="panel-inner">
+          <div class="section-header">
+            <h4><i class="bi bi-quote me-2"></i>Citation Manager</h4>
+            <p class="text-muted">Generate and manage citations in APA, IEEE, and MLA formats</p>
+          </div>
+
+          <!-- Citation workspace — bookmarked papers -->
+          <div class="card p-3 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="mb-0 fw-semibold">Bookmarked Papers</h6>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="citationStyleSelect" style="width:140px">
+                  <option value="APA">APA 7th</option>
+                  <option value="IEEE">IEEE</option>
+                  <option value="MLA">MLA 9th</option>
+                </select>
+                <button class="btn btn-sm btn-outline-primary" id="generateAllCitationsBtn">
+                  <i class="bi bi-list-ol me-1"></i>Generate Bibliography
+                </button>
+              </div>
+            </div>
+            <div id="citationWorkspace">
+              <div class="text-center py-4 text-muted">
+                <i class="bi bi-bookmark fs-2 opacity-25"></i>
+                <p class="mt-2">Bookmark papers from the Search tab to manage their citations here.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bibliography output -->
+          <div id="bibliographyOutput" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-semibold">Generated Bibliography</h6>
+              <button class="btn btn-sm btn-outline-secondary" id="copyBibBtn">
+                <i class="bi bi-clipboard me-1"></i>Copy All
+              </button>
+            </div>
+            <pre class="bibliography-pre" id="bibliographyText"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- end main-panel -->
+
+</div>
+<!-- end research-layout -->
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

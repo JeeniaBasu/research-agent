@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% block title %}ResearchMind — Research Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout container-fluid py-4 px-3 px-lg-4">
+
+  <!-- ===================== PAGE HEADER ===================== -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h1 class="h3 fw-bold mb-1">
+            <i class="bi bi-grid-3x3-gap me-2 text-primary"></i>Research Dashboard
+          </h1>
+          <p class="text-muted mb-0">Analytics, history, and bookmarks at a glance</p>
+        </div>
+        <a href="/" class="btn btn-primary">
+          <i class="bi bi-chat-dots me-2"></i>Open Research Chat
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== STATS ROW ===================== -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="stat-icon bg-blue-soft"><i class="bi bi-search"></i></div>
+        <div class="stat-value" id="totalSearches">{{ stats.total_searches }}</div>
+        <div class="stat-label">Searches</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="stat-icon bg-purple-soft"><i class="bi bi-chat-dots"></i></div>
+        <div class="stat-value">{{ stats.total_chats }}</div>
+        <div class="stat-label">AI Chats</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="stat-icon bg-green-soft"><i class="bi bi-file-text"></i></div>
+        <div class="stat-value">{{ stats.total_summaries }}</div>
+        <div class="stat-label">Summaries</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="stat-icon bg-orange-soft"><i class="bi bi-journal-richtext"></i></div>
+        <div class="stat-value">{{ stats.total_reviews }}</div>
+        <div class="stat-label">Lit Reviews</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="stat-icon bg-red-soft"><i class="bi bi-bookmark-fill"></i></div>
+        <div class="stat-value">{{ stats.total_bookmarks }}</div>
+        <div class="stat-label">Bookmarks</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="stat-icon bg-teal-soft"><i class="bi bi-cpu"></i></div>
+        <div class="stat-value">{{ stats.rag_papers }}</div>
+        <div class="stat-label">RAG Papers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MAIN GRID ===================== -->
+  <div class="row g-4">
+
+    <!-- ---- LEFT: Recent Activity + Quick Actions ---- -->
+    <div class="col-lg-8">
+
+      <!-- Activity Chart placeholder (SVG bar chart) -->
+      <div class="card dashboard-card mb-4">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-bar-chart me-2 text-primary"></i>Research Activity</h6>
+          <span class="badge bg-primary bg-opacity-10 text-primary">Live</span>
+        </div>
+        <div class="card-body p-3">
+          <canvas id="activityChart" height="120"></canvas>
+          <div class="activity-legend mt-2 d-flex gap-3 justify-content-center">
+            <span class="legend-item"><span class="legend-dot bg-primary"></span>Searches</span>
+            <span class="legend-item"><span class="legend-dot bg-purple"></span>AI Chats</span>
+            <span class="legend-item"><span class="legend-dot bg-success"></span>Reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent History -->
+      <div class="card dashboard-card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Research History</h6>
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm" id="historyFilter" style="width:130px">
+              <option value="">All types</option>
+              <option value="search">Searches</option>
+              <option value="chat">AI Chats</option>
+              <option value="summarize">Summaries</option>
+              <option value="literature_review">Lit Reviews</option>
+            </select>
+            <button class="btn btn-sm btn-outline-danger" id="clearAllHistoryBtn">
+              <i class="bi bi-trash me-1"></i>Clear
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="history-list" id="dashHistoryList">
+            {% if history %}
+              {% for entry in history %}
+              <div class="history-item" data-id="{{ entry.id }}" data-type="{{ entry.type }}">
+                <div class="history-icon type-{{ entry.type }}">
+                  {% if entry.type == 'search' %}<i class="bi bi-search"></i>
+                  {% elif entry.type == 'chat' %}<i class="bi bi-chat-dots"></i>
+                  {% elif entry.type == 'summarize' %}<i class="bi bi-file-text"></i>
+                  {% elif entry.type == 'literature_review' %}<i class="bi bi-journal-richtext"></i>
+                  {% elif entry.type == 'compare' %}<i class="bi bi-bar-chart"></i>
+                  {% elif entry.type == 'report_section' %}<i class="bi bi-pencil"></i>
+                  {% else %}<i class="bi bi-lightning"></i>{% endif %}
+                </div>
+                <div class="history-content flex-grow-1">
+                  <div class="history-query">{{ entry.query[:80] }}</div>
+                  <div class="history-meta">
+                    <span class="badge type-badge-{{ entry.type }}">{{ entry.type | replace('_', ' ') | title }}</span>
+                    <span class="text-muted small ms-2">{{ entry.timestamp[:19] | replace('T', ' ') }}</span>
+                    {% if entry.papers %}
+                    <span class="text-muted small ms-2">· {{ entry.papers | length }} papers</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="history-actions">
+                  <button class="btn btn-xs btn-icon history-rerun" data-query="{{ entry.query }}" title="Re-run">
+                    <i class="bi bi-play"></i>
+                  </button>
+                  <button class="btn btn-xs btn-icon history-delete" data-id="{{ entry.id }}" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="text-center py-5 text-muted">
+                <i class="bi bi-clock-history fs-1 opacity-25"></i>
+                <p class="mt-2">No research history yet.<br>Start by searching for papers or chatting with the agent.</p>
+                <a href="/" class="btn btn-sm btn-primary mt-2">
+                  <i class="bi bi-chat-dots me-1"></i>Open Research Chat
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ---- RIGHT: AI Status + Bookmarks ---- -->
+    <div class="col-lg-4">
+
+      <!-- AI Status Card -->
+      <div class="card dashboard-card mb-4">
+        <div class="card-header">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-cpu me-2 text-primary"></i>AI Agent Status</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="status-row">
+            <span class="status-label">IBM Watsonx.ai</span>
+            <span class="status-val {{ 'status-online' if watsonx_ready else 'status-offline' }}">
+              <i class="bi bi-circle-fill me-1"></i>{{ 'Connected' if watsonx_ready else 'Offline' }}
+            </span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Model</span>
+            <span class="status-val text-muted small">granite-3-3-8b-instruct</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">RAG Store</span>
+            <span class="status-val text-muted small">{{ stats.rag_papers }} papers indexed</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Citation Style</span>
+            <span class="status-val text-muted small">APA 7th (default)</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Hallucination Guard</span>
+            <span class="status-val status-online"><i class="bi bi-shield-check me-1"></i>Active</span>
+          </div>
+
+          <div class="mt-3">
+            <p class="small fw-semibold text-muted mb-2">Domain Expertise</p>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-primary bg-opacity-10 text-primary">Computer Science</span>
+              <span class="badge bg-primary bg-opacity-10 text-primary">AI / ML</span>
+              <span class="badge bg-primary bg-opacity-10 text-primary">NLP</span>
+              <span class="badge bg-primary bg-opacity-10 text-primary">Data Science</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card dashboard-card mb-4">
+        <div class="card-header">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-lightning me-2 text-primary"></i>Quick Actions</h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="d-grid gap-2">
+            <a href="/?mode=search" class="btn btn-outline-primary btn-sm text-start">
+              <i class="bi bi-search me-2"></i>Search Research Papers
+            </a>
+            <a href="/?mode=review" class="btn btn-outline-secondary btn-sm text-start">
+              <i class="bi bi-journal-richtext me-2"></i>Generate Literature Review
+            </a>
+            <a href="/?mode=report" class="btn btn-outline-secondary btn-sm text-start">
+              <i class="bi bi-file-text me-2"></i>Draft Paper Section
+            </a>
+            <a href="/?mode=citations" class="btn btn-outline-secondary btn-sm text-start">
+              <i class="bi bi-quote me-2"></i>Manage Citations
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookmarks -->
+      <div class="card dashboard-card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-bookmark-fill me-2 text-primary"></i>Bookmarked Papers</h6>
+          <span class="badge bg-primary">{{ stats.total_bookmarks }}</span>
+        </div>
+        <div class="card-body p-0">
+          {% if bookmarks %}
+            {% for bm in bookmarks %}
+            <div class="bookmark-item">
+              <div class="bookmark-title">{{ bm.paper.title[:70] }}{% if bm.paper.title|length > 70 %}...{% endif %}</div>
+              <div class="bookmark-meta">
+                <span class="text-muted small">
+                  {{ bm.paper.authors[0] if bm.paper.authors else 'Unknown' }}
+                  {% if bm.paper.authors|length > 1 %} et al.{% endif %}
+                  · {{ bm.paper.year or 'n.d.' }}
+                </span>
+                <span class="badge bg-secondary bg-opacity-15 text-secondary small ms-2">{{ bm.paper.source }}</span>
+              </div>
+              <div class="bookmark-citation small text-muted font-monospace mt-1">
+                {{ bm.citations.APA[:120] if bm.citations and bm.citations.APA else '' }}...
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center py-4 text-muted">
+              <i class="bi bi-bookmark fs-2 opacity-25"></i>
+              <p class="mt-2 small">No bookmarks yet.<br>Bookmark papers from the search results.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
