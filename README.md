@@ -16,6 +16,24 @@
 
 ---
 
+### Key Features
+
+| Feature | Description |
+|---|---|
+| 🤖 **AI Research Chat** | Natural language Q&A grounded in retrieved papers via RAG |
+| 🔍 **Multi-Database Search** | arXiv, Semantic Scholar, Crossref, PubMed — unified results |
+| 📄 **Paper Summarizer** | Structured extraction: objectives, methodology, results, limitations |
+| 📊 **Paper Comparison** | Side-by-side markdown tables for up to 6 papers |
+| 📚 **Literature Review** | Full academic review with themes, gaps, and future directions |
+| 📝 **Report Drafter** | Draft any paper section (Abstract → References) with Granite |
+| 💡 **Research Gap Analysis** | Identify contradictions, gaps, and testable hypotheses |
+| 🔖 **Citation Manager** | APA 7th, IEEE, MLA 9th — single papers or full bibliography |
+| 📥 **PDF & DOCX Export** | Professional report exports with cover page and references |
+| 📌 **Bookmarks & History** | Persistent research history and paper bookmarks |
+| 🌙 **Dark / Light Mode** | One-click theme switching, fully responsive |
+
+---
+
 # 📸 ResearchMind in Action
 
 ## ResearchMind AI Research Agent Workflow
@@ -59,24 +77,6 @@
 <p align="center">
   <img src="images/research-cycle.png" width="100%">
 </p>
-
----
-
-### Key Capabilities
-
-| Feature | Description |
-|---|---|
-| 🤖 **AI Research Chat** | Natural language Q&A grounded in retrieved papers via RAG |
-| 🔍 **Multi-Database Search** | arXiv, Semantic Scholar, Crossref, PubMed — unified results |
-| 📄 **Paper Summarizer** | Structured extraction: objectives, methodology, results, limitations |
-| 📊 **Paper Comparison** | Side-by-side markdown tables for up to 6 papers |
-| 📚 **Literature Review** | Full academic review with themes, gaps, and future directions |
-| 📝 **Report Drafter** | Draft any paper section (Abstract → References) with Granite |
-| 💡 **Research Gap Analysis** | Identify contradictions, gaps, and testable hypotheses |
-| 🔖 **Citation Manager** | APA 7th, IEEE, MLA 9th — single papers or full bibliography |
-| 📥 **PDF & DOCX Export** | Professional report exports with cover page and references |
-| 📌 **Bookmarks & History** | Persistent research history and paper bookmarks |
-| 🌙 **Dark / Light Mode** | One-click theme switching, fully responsive |
 
 ---
 
