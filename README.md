@@ -1,18 +1,41 @@
 
 # ResearchMind — AI-Powered Research Agent
 
->Powered by **IBM Granite** on **IBM Watsonx.ai**
+An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**, and **Retrieval-Augmented Generation (RAG)** to automate literature discovery, review generation, citation management, and academic report drafting.
+
+> Powered by **IBM Granite** on **IBM watsonx.ai**
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.0-green?logo=flask)](https://flask.palletsprojects.com)
-[![IBM Watsonx](https://img.shields.io/badge/IBM%20Watsonx.ai-Granite-blue?logo=ibm)](https://www.ibm.com/watsonx)
+[![IBM Granite](https://img.shields.io/badge/IBM-Granite-blue?logo=ibm)](https://www.ibm.com/granite)
+[![IBM watsonx.ai](https://img.shields.io/badge/IBM-watsonx.ai-blue?logo=ibm)](https://www.ibm.com/watsonx)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple?logo=bootstrap)](https://getbootstrap.com)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 ## Live Application - https://research-agent-v3ro.onrender.com
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [ResearchMind in Action](#-researchmind-in-action)
+- [Key Capabilities](#key-capabilities)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [Getting IBM Credentials](#getting-ibm-credentials)
+- [Customising the Agent](#customising-the-agent)
+- [API Reference](#api-reference)
+- [Production Deployment](#production-deployment)
+- [IBM Cloud Lite Compatibility](#ibm-cloud-lite-compatibility)
+- [Usage Guide](#usage-guide)
+- [Technologies Used](#technologies-used)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
+
 ## Overview
 
-**ResearchMind** is a production-ready AI research assistant that autonomously supports the full academic research lifecycle — from paper discovery and summarisation to literature review generation and citation management — using **IBM Granite models** on **IBM Watsonx.ai** and **Retrieval-Augmented Generation (RAG)** for factually grounded responses.
+**ResearchMind** is a production-ready AI research assistant that autonomously supports the full academic research lifecycle — from paper discovery and summarisation to literature review generation and citation management — using **IBM Granite models** on **IBM watsonx.ai** and **Retrieval-Augmented Generation (RAG)** for factually grounded responses.
 
 ---
 
@@ -141,7 +164,7 @@ User Query
 
 - Python 3.9 or higher
 - IBM Cloud account (free tier works)
-- IBM Watsonx.ai project with Granite model access
+- IBM watsonx.ai project with Granite model access
 
 ### 1. Clone / Download
 
@@ -202,9 +225,9 @@ Open your browser at **http://localhost:5000**
 3. Navigate to **API Keys** → **Create an IBM Cloud API Key**
 4. Copy the key into your `.env` file as `IBM_CLOUD_API_KEY`
 
-### Watsonx.ai Project ID
+### watsonx.ai Project ID
 
-1. Open [IBM Watsonx.ai](https://dataplatform.cloud.ibm.com)
+1. Open [IBM watsonx.ai](https://dataplatform.cloud.ibm.com)
 2. Create or open a project
 3. Go to **Manage** tab → **General** → copy the **Project ID**
 4. Paste it into `.env` as `WATSONX_PROJECT_ID`
@@ -370,7 +393,7 @@ Deploy via Code Engine with environment secrets configured through the IBM Cloud
 
 ResearchMind is designed to run within IBM Cloud Lite (free tier) constraints:
 
-- **Watsonx.ai Free Tier**: Uses `ibm/granite-3-3-8b-instruct` — available on Lite plans
+- **watsonx.ai Free Tier**: Uses `ibm/granite-3-3-8b-instruct` — available on Lite plans
 - **No paid databases required**: All research APIs (arXiv, Semantic Scholar, Crossref) have free tiers
 - **In-memory storage**: No database service required (history/bookmarks stored in memory)
 - **Lightweight RAG**: TF-IDF based — no GPU or vector DB service needed
@@ -417,7 +440,7 @@ Or use the API directly: `POST /api/research-gaps`
 | Technology | Role |
 |---|---|
 | **IBM Granite 3.3 8B Instruct** | Core AI model for all NLP tasks |
-| **IBM Watsonx.ai** | AI platform and model inference |
+| **IBM watsonx.ai** | AI platform and model inference |
 | **Python Flask** | Web framework and REST API |
 | **Bootstrap 5.3** | Responsive UI framework |
 | **arXiv API** | Open access preprint papers |
@@ -434,7 +457,7 @@ Or use the API directly: `POST /api/research-gaps`
 
 ### "IBM Watsonx.ai is not available"
 - Verify your `IBM_CLOUD_API_KEY` and `WATSONX_PROJECT_ID` in `.env`
-- Ensure your IBM Cloud API key has **Watsonx.ai** service access
+- Ensure your IBM Cloud API key has **watsonx.ai** service access
 - Check your `WATSONX_URL` matches your IBM Cloud region
 
 ### Paper search returns no results
@@ -460,10 +483,9 @@ MIT License — free for hackathon and commercial use.
 
 ## Acknowledgements
 
-- IBM Watsonx.ai team for the Granite foundation models
+- IBM watsonx.ai team for the Granite foundation models
 - arXiv, Semantic Scholar, Crossref, and PubMed for open research APIs
 - Bootstrap and Bootstrap Icons for the UI framework
 
 ---
-
-*ResearchMind AI Agent — Built with IBM Granite on IBM Watsonx.ai*
+*ResearchMind AI Agent — Built with IBM Granite on IBM watsonx.ai*
