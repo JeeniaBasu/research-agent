@@ -28,7 +28,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
   - [Application Screens](#application-screens)
   - [ResearchMind: Intelligent Research Cycle](#researchmind-intelligent-research-cycle)
 - [Implementation Details](#implementation-details)
-  - [Project Structure](#project-structure)
+  - [Codebase Structure](#codebase-structure)
   - [RAG Pipeline](#rag-pipeline)
 - [Quick Start](#quick-start)
 - [Getting IBM Credentials](#getting-ibm-credentials)
@@ -131,7 +131,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 
 # Implementation Details
 
-## Project Structure
+## Codebase Structure
 
 ```
 research-agent/
