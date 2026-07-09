@@ -20,9 +20,10 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 ## Table of Contents
 
 - [Overview](#overview)
+- [Why ResearchMind?](#why-researchmind)
 - [Key Features](#key-features)
 - [ResearchMind in Action](#-researchmind-in-action)
-- [Architecture](#architecture)
+- [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
 - [Getting IBM Credentials](#getting-ibm-credentials)
 - [Customising the Agent](#customising-the-agent)
@@ -33,6 +34,9 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 - [Technologies Used](#technologies-used)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+---
 
 ## Overview
 
