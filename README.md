@@ -19,8 +19,8 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 ## Table of Contents
 
 - [Overview](#overview)
+- [Key Features](#key-features)
 - [ResearchMind in Action](#-researchmind-in-action)
-- [Key Capabilities](#key-capabilities)
 - [Architecture](#architecture)
 - [Quick Start](#quick-start)
 - [Getting IBM Credentials](#getting-ibm-credentials)
