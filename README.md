@@ -49,17 +49,18 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 **ResearchMind** is a production-ready AI research assistant that autonomously supports the full academic research lifecycle — from paper discovery and summarisation to literature review generation and citation management — using **IBM Granite models** on **IBM watsonx.ai** and **Retrieval-Augmented Generation (RAG)** for factually grounded responses.
 
 ---
+
 ## Why ResearchMind?
 
-✔ End-to-end research automation
+✔ Automates the complete academic research workflow
 
-✔ Multi-source scholarly retrieval
+✔ Retrieves and synthesizes papers from multiple scholarly databases
 
-✔ IBM Granite + RAG grounded responses
+✔ Generates grounded responses using IBM Granite + RAG
 
-✔ Citation management
+✔ Produces publication-ready citations and literature reviews
 
-✔ Production-ready deployment
+✔ Ready for deployment on IBM Cloud Lite
 
 ---
 
@@ -97,7 +98,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
   <img src="images/architecture-blueprint.png" width="100%">
 </p>
 
-
+---
 
 ## Application Screens
 
@@ -166,12 +167,12 @@ research-agent/
 └── exports/                 # Generated PDF/DOCX files (auto-created)
 ```
 
-### RAG Pipeline
+## RAG Pipeline
 
 ```
 User Query
     │
-    ├─→ Research APIs (arXiv, S2, Crossref, PubMed)
+    ├─→ Research APIs (arXiv • Semantic Scholar • Crossref • PubMed)
     │       └─→ Retrieve top-N relevant papers
     │
     ├─→ RAG Service (TF-IDF vectoriser)
@@ -193,7 +194,7 @@ User Query
 - IBM Cloud account (free tier works)
 - IBM watsonx.ai project with Granite model access
 
-### 1. Clone / Download
+### 1. Clone the Repository
 
 ```bash
 cd research-agent
@@ -466,7 +467,7 @@ Or use the API directly: `POST /api/research-gaps`
 
 | Technology | Role |
 |---|---|
-| **IBM Granite 3.3 8B Instruct** | Core AI model for all NLP tasks |
+| **IBM Granite 3.3 8B Instruct Model** | Core AI model for all NLP tasks |
 | **IBM watsonx.ai** | AI platform and model inference |
 | **Python Flask** | Web framework and REST API |
 | **Bootstrap 5.3** | Responsive UI framework |
