@@ -22,7 +22,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 - [Overview](#overview)
 - [Why ResearchMind?](#why-researchmind)
 - [Key Features](#key-features)
-- [ResearchMind in Action](#-researchmind-in-action)
+- [Visual Overview](#visual-overview)
   - [ResearchMind AI Research Agent Workflow](#researchmind-ai-research-agent-workflow)
   - [Architecture Blueprint](#architecture-blueprint)
   - [Application Screens](#application-screens)
@@ -80,7 +80,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 
 ---
 
-# ResearchMind in Action
+# Visual Overview
 
 ## ResearchMind AI Research Agent Workflow
 
