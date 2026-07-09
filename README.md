@@ -11,6 +11,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 [![IBM watsonx.ai](https://img.shields.io/badge/IBM-watsonx.ai-blue?logo=ibm)](https://www.ibm.com/watsonx)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple?logo=bootstrap)](https://getbootstrap.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ---
 ## Live Application - https://research-agent-v3ro.onrender.com
 
@@ -36,6 +37,19 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 ## Overview
 
 **ResearchMind** is a production-ready AI research assistant that autonomously supports the full academic research lifecycle — from paper discovery and summarisation to literature review generation and citation management — using **IBM Granite models** on **IBM watsonx.ai** and **Retrieval-Augmented Generation (RAG)** for factually grounded responses.
+
+---
+## Why ResearchMind?
+
+✔ End-to-end research automation
+
+✔ Multi-source scholarly retrieval
+
+✔ IBM Granite + RAG grounded responses
+
+✔ Citation management
+
+✔ Production-ready deployment
 
 ---
 
@@ -103,7 +117,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 
 ---
 
-## Architecture
+## Project Structure
 
 ```
 research-agent/
