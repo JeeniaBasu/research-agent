@@ -63,7 +63,7 @@ An AI-powered research assistant built with **IBM Granite**, **IBM watsonx.ai**,
 
 ---
 
-### Key Features
+## Key Features
 
 | Feature | Description |
 |---|---|
@@ -166,7 +166,7 @@ research-agent/
 └── exports/                 # Generated PDF/DOCX files (auto-created)
 ```
 
-## RAG Pipeline
+### RAG Pipeline
 
 ```
 User Query
