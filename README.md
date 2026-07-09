@@ -42,7 +42,7 @@
 
 | Paper Comparison | Foundation Model Comparison |
 |------------------|-----------------------------|
-| ![](images/paper_comparision.png) | ![](images/foundation-model-comparison.png) |
+| ![](images/paper_comparison.png) | ![](images/foundation-model-comparison.png) |
 
 | Literature Review | AI-Assisted Research Report Drafting |
 |-------------------|--------------------------------------|
