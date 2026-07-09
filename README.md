@@ -14,6 +14,54 @@
 
 **ResearchMind** is a production-ready AI research assistant that autonomously supports the full academic research lifecycle — from paper discovery and summarisation to literature review generation and citation management — using **IBM Granite models** on **IBM Watsonx.ai** and **Retrieval-Augmented Generation (RAG)** for factually grounded responses.
 
+---
+
+# 📸 ResearchMind in Action
+
+## ResearchMind AI Research Agent Workflow
+
+<p align="center">
+  <img src="images/researchmind-workflow.png" width="100%">
+</p>
+
+---
+
+## Architecture Blueprint
+
+<p align="center">
+  <img src="images/architecture-blueprint.png" width="100%">
+</p>
+
+---
+
+## Application Screens
+
+| Home Page | Paper Discovery |
+|-----------|-----------------|
+| ![](images/homepage.png) | ![](images/paper-discovery.png) |
+
+| Paper Comparison | Foundation Model Comparison |
+|------------------|-----------------------------|
+| ![](images/paper_comparision.png) | ![](images/foundation-model-comparison.png) |
+
+| Literature Review | AI-Assisted Research Report Drafting |
+|-------------------|--------------------------------------|
+| ![](images/literature-review.png) | ![](images/research-report.png) |
+
+| Citation Management | Bibliography Generation |
+|----------------------|-------------------------|
+| ![](images/citation-management.png) | ![](images/bibliography.png) |
+
+---
+
+## ResearchMind: Intelligent Research Cycle
+
+<p align="center">
+  <img src="images/research-cycle.png" width="100%">
+</p>
+
+---
+
 ### Key Capabilities
 
 | Feature | Description |
